@@ -1,0 +1,76 @@
+name: Build efficient Windows x64 preview
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+# Explicit-marker artifact-only build. No release publishing or repository write permission.
+permissions:
+  contents: read
+
+concurrency:
+  group: efficient-windows-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  windows:
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[build windows]')
+    runs-on: windows-latest
+    timeout-minutes: 45
+    env:
+      CSC_IDENTITY_AUTO_DISCOVERY: "false"
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.0
+      - name: Install locked runtime dependencies
+        run: bun install --frozen-lockfile --ignore-scripts
+      - name: Install locked launcher dependencies
+        working-directory: launcher
+        run: bun install --frozen-lockfile
+      - name: Prepare checksum-verified baseline Bun runtime
+        shell: pwsh
+        run: ./scripts/prepare-windows-baseline-bun.ps1 -Version 1.4.0 -GitHubEnv $env:GITHUB_ENV
+      - name: Check installed launch helper validation
+        shell: pwsh
+        run: |
+          cmd /d /c scripts\Start-Installed-Efficient-Windows.cmd C:\missing-efficient-test.exe
+          if ($LASTEXITCODE -ne 2) { throw "Launch helper validation failed" }
+          $global:LASTEXITCODE = 0
+      - name: Run resource regressions
+        run: npm run test:resources
+      - name: Run upstream verification
+        run: bun run verify
+      - name: Build unsigned Windows installer
+        run: bun run app:package
+      - name: Smoke-test packaged application
+        run: bun run app:smoke
+      - name: Stage installer, provenance, and checksums
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $installers = @(Get-ChildItem launcher/artifacts -Filter "*-win-x64.exe" -File)
+          if ($installers.Count -ne 1) { throw "Expected one Windows x64 installer" }
+          New-Item -ItemType Directory -Force efficient-artifacts | Out-Null
+          Copy-Item $installers[0].FullName "efficient-artifacts/codex-web-efficient-win-x64.exe"
+          Copy-Item LICENSE,EFFICIENT-FORK.md efficient-artifacts
+          Copy-Item scripts/Start-Installed-Efficient-Windows.cmd efficient-artifacts
+          Copy-Item docs/WINDOWS-EFFICIENT-START-HERE.txt efficient-artifacts/START-HERE.txt
+          @("Source commit: $env:GITHUB_SHA", "Build run: $env:GITHUB_RUN_ID", "Unsigned source preview; no live account validation.") | Set-Content efficient-artifacts/build-info.txt
+          Get-ChildItem efficient-artifacts -File | Sort-Object Name | ForEach-Object {
+            $hash = (Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
+            "$hash  $($_.Name)"
+          } | Set-Content efficient-artifacts/SHA256SUMS.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: codex-web-efficient-windows-x64-${{ github.run_number }}
+          path: efficient-artifacts/*
+          if-no-files-found: error
+          retention-days: 7

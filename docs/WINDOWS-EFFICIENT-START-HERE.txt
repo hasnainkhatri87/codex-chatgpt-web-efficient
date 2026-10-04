@@ -1,0 +1,13 @@
+Windows x64 efficient preview
+
+1. Extract every file from this ZIP.
+2. Run codex-web-efficient-win-x64.exe to install. This preview is unsigned.
+3. Close Codex Web GPT completely, including its tray icon.
+4. Find its installed executable using the Start menu shortcut's Open file location / Properties target.
+5. Drag the installed Codex Web GPT.exe onto Start-Installed-Efficient-Windows.cmd, or run the CMD and paste the full executable path.
+
+The helper starts the installed app with a maximum of five tabs and five-minute idle retention. Active work is not closed by idle cleanup. It needs no Bun or Node installation and changes no global environment settings.
+Normal shortcuts retain the balanced default. If an app instance is already running, close it before using this helper.
+
+Five tabs are a capacity limit, not a promise to open five tabs immediately. This is an experimental, unsigned build with automated tests, not live ChatGPT account validation.
+Verify downloaded files against SHA256SUMS.txt if desired. Source provenance is in build-info.txt and EFFICIENT-FORK.md.

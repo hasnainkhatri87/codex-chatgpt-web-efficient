@@ -1,0 +1,29 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> codex-chatgpt-web@6.1.4 test:resources
+> node --require ./scripts/resource/mock-electron.cjs --test resource-tests/*.test.*
+
+✔ low profile rejects third active tab including pending approvals (1.465859ms)
+✔ low profile reaps only completed idle tabs at five minutes in both modes (1.245764ms)
+✔ user five-tab policy permits capacity five and rejects sixth active owner (0.350141ms)
+✔ queue preserves FIFO including undefined and releases drained references (36.630277ms)
+✔ queue byte and count bounds, terminal error and cancellation (0.751197ms)
+✔ queue delivers pending consumer and closes waiting readers (0.180184ms)
+✔ writer waits for drain and preserves UTF-8 line order (4.939719ms)
+✔ writer stalled peer is bounded, fails once and clears listeners (0.673327ms)
+✔ writer consumes asynchronous pipe failures exactly once (1.661965ms)
+✔ resource defaults preserve existing behavior and low preset never increases cap (0.747918ms)
+✔ timer-originated adapter overflow fails the turn without an uncaught exception (2.135763ms)
+✔ writer close explicitly discards pending output and is not a flush (0.464644ms)
+✔ writer tiny-frame backlog has an independent object-count cap (2.900601ms)
+✔ payload estimator handles wide strings and nested terminal state (0.395844ms)
+✔ fork workflow is manual, read-only, artifact-only and preserves verification (1.749333ms)
+✔ user five-tab preset overrides low default without global mutations (1.719145ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 16
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 215.778748
