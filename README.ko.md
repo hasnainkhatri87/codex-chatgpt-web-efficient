@@ -1,3 +1,5 @@
+> **효율화 포크 소스 미리보기(최대5개 탭):** 설정 후 `bun run app:efficient` 또는 `Start-Efficient-Windows.cmd`를 실행하세요. [변경 사항, 저자원 설정, 벤치마크 및 제한 사항](EFFICIENT-FORK.md)을 확인하세요. 업스트림v6.1.4 기반이며 실제 계정에서의RAM/CPU 절감은 검증되지 않았습니다. 아래 다운로드 버튼은 이 포크가 아닌 업스트림 버전을 설치합니다.
+
 <p align="center">
   <img src="assets/readme/hero.svg" width="960" alt="웹 모델로 전환해도, Codex는 그대로. 내 ChatGPT 플랜. 내 작업 흐름. 모델의 가능성을 최대한.">
 </p>

@@ -1,3 +1,5 @@
+> **低资源分支源码预览（最多5个标签页）：** 完成设置后运行 `bun run app:efficient` 或 `Start-Efficient-Windows.cmd`。请参阅[改动、低资源设置、基准测试和限制](EFFICIENT-FORK.md)。基于上游v6.1.4，尚未验证真实账户的RAM/CPU节省效果。下方下载按钮安装的是上游版本，而非本分支。
+
 <p align="center">
   <img src="assets/readme/hero.svg" width="960" alt="切换到网页版模型，继续使用 Codex。你的 ChatGPT 订阅。你的工作流。充分发挥模型能力。">
 </p>

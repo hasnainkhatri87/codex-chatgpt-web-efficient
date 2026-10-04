@@ -1,3 +1,5 @@
+> **効率化フォークのソースプレビュー（最大5タブ）:** セットアップ後に `bun run app:efficient` または `Start-Efficient-Windows.cmd` を実行してください。[変更点、省リソース設定、ベンチマークと制限](EFFICIENT-FORK.md)をご確認ください。上流版v6.1.4に基づいています。実アカウントでのRAM・CPU削減は未検証です。下のダウンロードボタンは、このフォークではなく上流版をインストールします。
+
 <p align="center">
   <img src="assets/readme/hero.svg" width="960" alt="Web モデルに切り替えても、Codex はそのまま。ChatGPT のプラン。いつものワークフロー。モデルの力を最大限に。">
 </p>
