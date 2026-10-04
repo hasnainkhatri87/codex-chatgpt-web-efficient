@@ -96,10 +96,15 @@ test('payload estimator handles wide strings and nested terminal state',async()=
  assert.ok(estimateAdapterEventBytes({type:'done',providerState:{test:{data:'x'.repeat(10000)}}})>20000);
 });
 
-test('fork workflow is manual, read-only, artifact-only and preserves verification',async()=>{
+test('fork workflow is explicit-marker gated, read-only, artifact-only and preserves verification',async()=>{
  const {readFileSync,readdirSync}=await import('node:fs');
  const wf=readFileSync(new URL('../.github/workflows/windows-build.yml',import.meta.url),'utf8');
- assert.match(wf,/workflow_dispatch:/);assert.doesNotMatch(wf,/^  (push|pull_request|schedule):/m);
+ assert.match(wf,/workflow_dispatch:/);
+ assert.doesNotMatch(wf,/^  (pull_request|schedule):/m);
+ assert.match(wf,/^  push:\r?\n    branches: \[main\]\r?$/m);
+ assert.match(wf,/if: github\.event_name == 'workflow_dispatch' \|\| contains\(github\.event\.head_commit\.message, '\[build windows\]'\)/);
+ assert.match(wf,/timeout-minutes: 45/);
+ assert.doesNotMatch(wf,/runs-on:.*(large|self-hosted)/);
  assert.match(wf,/contents: read/);assert.doesNotMatch(wf,/contents: write|gh release|secrets\./);
  assert.match(wf,/persist-credentials: false/);assert.match(wf,/bun run verify/);assert.match(wf,/bun run app:smoke/);
  assert.deepEqual(readdirSync(new URL('../.github/workflows/',import.meta.url)),['windows-build.yml']);
