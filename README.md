@@ -1,1 +1,0 @@
-# codex-chatgpt-web-efficient
